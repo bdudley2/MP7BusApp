@@ -3,6 +3,10 @@ package edu.illinois.cs.cs125.lab12;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -38,8 +42,28 @@ public final class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        startAPICall();
+        final Button getDestination = findViewById(R.id.getDestination);
+        getDestination.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View w) {
+                startGetNewsCall();
+            }
+        });
+
+        final TextView textView = findViewById(R.id.textView);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View w) {
+                startGetNewsCall();
+            }
+        });
+
     }
+
+    /*protected void finishProcessWeather(final String jsonResult) {
+        TextView textView = findViewById(R.id.textView);
+        textView.setText(response.toString());
+    }*/
 
     /**
      * Run when this activity is no longer visible.
@@ -52,18 +76,27 @@ public final class MainActivity extends AppCompatActivity {
     /**
      * Make a call to the weather API.
      */
-    void startAPICall() {
+    void startGetNewsCall() {
         try {
+            //String stopID = "PKLN:1";
+            String url = "https://developer.cumtd.com/api/v2.2/json/getnews"
+                    + "?key=" + BuildConfig.API_KEY;
+                    //+ "?stop_id=" + stopID;
+            Log.d(TAG, url);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.GET,
-                    "http://api.openweathermap.org/data/2.5/weather?zip=61820,us&appid="
-                            + BuildConfig.API_KEY,
+                    url,
                     null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(final JSONObject response) {
                             try {
                                 Log.d(TAG, response.toString(2));
+                                JSONObject news = response.getJSONArray("").getJSONObject(0);
+                                String author = news.getJSONObject("author").toString();
+                                Log.d(TAG, response.getJSONObject("time").toString());
+                                TextView textView = findViewById(R.id.textView);
+                                textView.setText(author);
                             } catch (JSONException ignored) { }
                         }
                     }, new Response.ErrorListener() {
