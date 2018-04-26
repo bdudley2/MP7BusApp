@@ -51,6 +51,15 @@ public final class MainActivity extends AppCompatActivity {
             }
         });
 
+        final Button currentLocation = findViewById(R.id.currentLocation);
+        getDestination.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View w) {
+                Log.d(TAG, "currentLocation button clicked");
+                startGetLocationCall();
+            }
+        });
+
 //        final TextView textView = findViewById(R.id.textView);
 //        textView.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -116,83 +125,75 @@ public final class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    //    /**
-//     * Make a call to the Lat Lon API.
-//     */
-//    void startGetLocationCall() {
-//        try {
-//            //String stopID = "PKLN:1";
-//            String url = "https://www.googleapis.com/geolocation/v1/geolocate"
-//                    + "?key=" + "AIzaSyAUhduQ2NSTUK3vdIKZBHA83JHl9T4UIyk";
-//            //+ "?stop_id=" + stopID;
-//            Log.d(TAG, url);
-//            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-//                    Request.Method.GET,
-//                    url,
-//                    null,
-//                    new Response.Listener<JSONObject>() {
-//                        @Override
-//                        public void onResponse(final JSONObject response) {
-//                            try {
-//                                Log.d(TAG, response.toString(2));
-//                                JSONObject location = response.getJSONObject("location");
-//                                String lat = location.getJSONObject("lat").toString();
-//                                String lng = location.getJSONObject("lng").toString();
-//                                //Log.d(TAG, response.getJSONObject("time").toString());
-//                                //TextView textView = findViewById(R.id.textView);
-//                                //textView.setText();
-//                            } catch (JSONException ignored) { }
-//                        }
-//                    },
-//                    new Response.ErrorListener() {
-//                        @Override
-//                        public void onErrorResponse(final VolleyError error) {
-//                            Log.e(TAG, error.toString());
-//                        }
-//                    });
-//            requestQueue.add(jsonObjectRequest);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    /**
-//     * Make a call to the Lat Lon API.
-//     */
-//    void startCurrentLocationCall() {
-//        try {
-//            //String stopID = "PKLN:1";
-//            String url = "https://www.googleapis.com/geolocation/v1/geolocate"
-//                    + "?key=" + "AIzaSyAUhduQ2NSTUK3vdIKZBHA83JHl9T4UIyk";
-//            //+ "?stop_id=" + stopID;
-//            Log.d(TAG, url);
-//            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-//                    Request.Method.GET,
-//                    url,
-//                    null,
-//                    new Response.Listener<JSONObject>() {
-//                        @Override
-//                        public void onResponse(final JSONObject response) {
-//                            try {
-//                                Log.d(TAG, response.toString(2));
-//                                JSONObject location = response.getJSONObject("location");
-//                                String lat = location.getJSONObject("lat").toString();
-//                                String lng = location.getJSONObject("lng").toString();
-//                                //Log.d(TAG, response.getJSONObject("time").toString());
-//                                //TextView textView = findViewById(R.id.textView);
-//                                //textView.setText();
-//                            } catch (JSONException ignored) { }
-//                        }
-//                    },
-//                    new Response.ErrorListener() {
-//                        @Override
-//                        public void onErrorResponse(final VolleyError error) {
-//                            Log.e(TAG, error.toString());
-//                        }
-//                    });
-//            requestQueue.add(jsonObjectRequest);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    /**
+     * Make a call to the Lat Lon API.
+     */
+    void startGetLocationCall() {
+        try {
+            //String stopID = "PKLN:1";
+            String url = "https://www.googleapis.com/geolocation/v1/geolocate"
+                    + "?key=" + "AIzaSyAUhduQ2NSTUK3vdIKZBHA83JHl9T4UIyk";
+            //+ "?stop_id=" + stopID;
+            Log.d(TAG, url);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.POST,
+                    url,
+                    null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(final JSONObject response) {
+                            try {
+                                Log.d(TAG, response.toString(2));
+                                JSONObject location = response.getJSONObject("location");
+                                String lat = location.get("lat").toString();
+                                String lng = location.get("lng").toString();
+                                String url = "https://developer.cumtd.com/api/v2.2/json/getstopsbylatlon"
+                                        + "?lat=" + lat + "&lon=" + lng + "&key=" + "790554d3895c41299cfe47ec9e9659a4";
+                                Log.d(TAG, url);
+                                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                                        Request.Method.GET,
+                                        url,
+                                        null,
+                                        new Response.Listener<JSONObject>() {
+                                            @Override
+                                            public void onResponse(final JSONObject response) {
+                                                try {
+                                                    Log.d(TAG, response.toString(2));
+                                                    JSONObject stops = response.getJSONArray("stops").getJSONObject(0);
+                                                    String stop_name = stops.get("stop_name").toString();
+                                                    //Log.d(TAG, response.getJSONObject("time").toString());
+                                                    TextView textView = findViewById(R.id.textView);
+                                                    textView.setText(stop_name);
+                                                } catch (JSONException ignored) {
+                                                    Log.e(TAG, ignored.toString());
+                                                }
+                                            }
+                                        },
+                                        new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(final VolleyError error) {
+                                                Log.e(TAG, error.toString());
+                                            }
+                                        });
+                                requestQueue.add(jsonObjectRequest);
+                                //Log.d(TAG, response.getJSONObject("time").toString());
+                                //TextView textView = findViewById(R.id.textView);
+                                //textView.setText(lat + " " + lng);
+                            } catch (JSONException ignored) {
+                                Log.e(TAG, ignored.toString());
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(final VolleyError error) {
+                            Log.e(TAG, error.toString());
+                        }
+                    });
+            requestQueue.add(jsonObjectRequest);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

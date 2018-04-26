@@ -24,7 +24,7 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/currentLocation"
             android:layout_width="275dp"
             android:layout_height="wrap_content"
             android:text="Current Location"
@@ -78,7 +78,7 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="274dp"
         android:text="" />
 
 </LinearLayout>
