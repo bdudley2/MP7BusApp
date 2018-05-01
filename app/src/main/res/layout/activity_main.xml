@@ -9,29 +9,42 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/getDestination"
+        android:id="@+id/getNews"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="37dp"
         android:layout_gravity="left|right"
         android:text="get news" />
 
-    <Space
+
+    <TextView
+        android:id="@+id/scrolltxtNews"
         android:layout_width="match_parent"
-        android:layout_height="30dp" />
+        android:layout_height="28dp"
+        android:background="#3BBAFA"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:singleLine="true"
+        android:scrollHorizontally="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit ="marquee_forever"
+        android:textAllCaps="false"
+        android:textSize="18sp" />
+
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="61dp">
 
         <Button
             android:id="@+id/currentLocation"
             android:layout_width="275dp"
-            android:layout_height="wrap_content"
-            android:text="Current Location"
+            android:layout_height="match_parent"
+            android:text="Get Info on Nearest Stop"
             android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
         <Button
             android:id="@+id/button5"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Pick a Location"
@@ -40,16 +53,17 @@
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="59dp">
 
         <Button
             android:id="@+id/leaveNow"
             android:layout_width="275dp"
             android:layout_height="match_parent"
-            android:text="Leave Now" />
+            android:text="Get List of all closest departures right now" />
 
         <Button
             android:id="@+id/button4"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Pick a time"
@@ -62,17 +76,11 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/button"
-            android:layout_width="275dp"
-            android:layout_height="wrap_content"
-            android:text="Illinois Terminal" />
-
-        <Button
-            android:id="@+id/button6"
+            android:id="@+id/ilTerm"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Bus Stop"
-            android:textSize="10sp" />
+            android:layout_height="wrap_content"
+            android:text="How To Get To Illinois Terminal" />
+
     </TableRow>
 
     <TextView
@@ -83,7 +91,7 @@
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/textView2"

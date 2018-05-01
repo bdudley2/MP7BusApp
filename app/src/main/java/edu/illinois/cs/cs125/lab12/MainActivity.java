@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.text.method.ScrollingMovementMethod;
 
@@ -32,7 +33,7 @@ import java.util.logging.SimpleFormatter;
  */
 public final class MainActivity extends AppCompatActivity {
     /** Default logging tag for messages from the main activity. */
-    private static final String TAG = "Lab12:Main";
+    private static final String TAG = "MP7:Main";
 
     private String GOOG_KEY = "AIzaSyAUhduQ2NSTUK3vdIKZBHA83JHl9T4UIyk";
     private String API_KEY = "10599ca8753240b88d657156fb02d4d0";
@@ -54,11 +55,11 @@ public final class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        final Button getDestination = findViewById(R.id.getDestination);
-        getDestination.setOnClickListener(new View.OnClickListener() {
+        final Button getNews = findViewById(R.id.getNews);
+        getNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View w) {
-                Log.d(TAG, "getDestination button clicked");
+                Log.d(TAG, "getNews button clicked");
                 startGetNewsCall();
                 TextView textView = findViewById(R.id.textView);
                 textView.setText("");
@@ -98,6 +99,19 @@ public final class MainActivity extends AppCompatActivity {
                 textView3.setText("");
             }
         });
+        final Button ilTerm = findViewById(R.id.ilTerm);
+        ilTerm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View w) {
+                Log.d(TAG, "Illinois Terminal button clicked");
+                TextView textView = findViewById(R.id.textView);
+                textView.setText("All buses return back to the Illinois Terminal within 30 minutes. Buttons above can provide more info.");
+                TextView textView2 = findViewById(R.id.textView2);
+                textView2.setText("");
+                TextView textView3 = findViewById(R.id.textView3);
+                textView3.setText("");
+            }
+        });
     }
 
     /**
@@ -131,9 +145,10 @@ public final class MainActivity extends AppCompatActivity {
                                 String news_body = news.get("body").toString();
                                 TextView textView = findViewById(R.id.textView);
                                 textView.setText(title);
-                                TextView textView2 = findViewById(R.id.textView2);
-                                textView.setMovementMethod(new ScrollingMovementMethod());
-                                textView2.setText(news_body);
+                                String betterBody = news_body.replaceAll("\\<.*?\\>", "");
+                                TextView textViewNews = findViewById(R.id.scrolltxtNews);
+                                textViewNews.setSelected(true);
+                                textViewNews.setText(betterBody);
                             } catch (JSONException ignored) { Log.e(TAG, ignored.toString());}
                         }
                     }, new Response.ErrorListener() {
@@ -173,8 +188,8 @@ public final class MainActivity extends AppCompatActivity {
 
 
                                 String url = "https://developer.cumtd.com/api/v2.2/json/getstopsbylatlon"
-                                        + "?lat=" + "40.1125" + "&lon=" + "-88.2269" + "&key=" + API_KEY;
-//                                        + "?lat=" + lat + "&lon=" + lng + "&key=" + API_KEY;
+//                                        + "?lat=" + "40.1325" + "&lon=" + "-88.2169" + "&key=" + API_KEY;
+                                        + "?lat=" + lat + "&lon=" + lng + "&key=" + API_KEY;
                                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                                         Request.Method.GET,
                                         url,
@@ -282,8 +297,8 @@ public final class MainActivity extends AppCompatActivity {
                                 String lat = location.get("lat").toString();
                                 String lng = location.get("lng").toString();
                                 String url = "https://developer.cumtd.com/api/v2.2/json/getstopsbylatlon"
-                                        + "?lat=" + "40.1125" + "&lon=" + "-88.2269" + "&key=" + API_KEY;
-//                                        + "?lat=" + lat + "&lon=" + lng + "&key=" + API_KEY;
+//                                        + "?lat=" + "40.1125" + "&lon=" + "-88.2269" + "&key=" + API_KEY;
+                                        + "?lat=" + lat + "&lon=" + lng + "&key=" + API_KEY;
                                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                                         Request.Method.GET,
                                         url,
